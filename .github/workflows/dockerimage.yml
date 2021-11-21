@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@master
+              
       - name: Fetch latest github release
         run: |
           sudo apt-get update && sudo apt-get install jq -y
@@ -22,6 +23,13 @@ jobs:
           echo $(curl $TARGET_REPO | jq -r '.tag_name')
           echo $steps.releases.outputs.current
         id: releases
+        
+      - name: debug
+        run: |
+          echo ${{ github.event_name }}
+          echo ${{ github.event.action }}
+          echo ${{ steps.releases.outputs.current }}
+          echo ${{ steps.releases.outputs.target }}
 
       - name: Install Docker CE
         run: |
